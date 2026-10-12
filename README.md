@@ -1,2 +1,2 @@
 # loop-website
-Official landing page for Loom Messenger by Loom Devs. / Официальная целевая страница для Loom Messenger от разработчиков Loom Devs.
+Official landing page for Loop Messenger by Loop Devs. / Официальная целевая страница для Loop Messenger от разработчиков Loop Devs.
