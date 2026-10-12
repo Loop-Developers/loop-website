@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loom — Переосмысление общения</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            900: '#4c1d95',
+                        },
+                        dark: {
+                            bg: '#0a0a0f',
+                            card: '#12121a',
+                            border: '#1e1e2d',
+                            muted: '#8e8ea0'
+                        }
+                    },
+                    animation: {
+                        'pulse-glow': 'pulseGlow 4s ease-in-out infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        pulseGlow: {
+                            '0%, 100%': { opacity: 0.4, transform: 'scale(1)' },
+                            '50%': { opacity: 0.7, transform: 'scale(1.05)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0a0a0f;
+            color: #f3f4f6;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .glass-panel {
+            background: rgba(18, 18, 26, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-nav {
+            background: rgba(10, 10, 15, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #a78bfa 0%, #c084fc 50%, #e879f9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gradient-btn {
+            background: linear-gradient(135deg, #7c3aed 0%, #9333ea 100%);
+            transition: all 0.3s ease;
+        }
+
+        .gradient-btn:hover {
+            background: linear-gradient(135deg, #6d28d9 0%, #7e22ce 100%);
+            box-shadow: 0 0 25px rgba(147, 51, 234, 0.45);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0f;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e1e2d;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #374151;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-brand-500 selection:text-white">
+
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-purple-400 p-0.5 shadow-lg shadow-brand-500/20 group-hover:scale-105 transition-transform duration-300">
+                    <div class="w-full h-full bg-dark-bg/40 backdrop-blur-sm rounded-[10px] flex items-center justify-center p-1.5">
+                        <svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-md" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M28 20C28 15.5817 31.5817 12 36 12C40.4183 12 44 15.5817 44 20V52C44 56.4183 47.5817 60 52 60H80C84.4183 60 88 63.5817 88 68C88 72.4183 84.4183 76 80 76H36C27.1634 76 20 68.8366 20 60V28C20 23.5817 23.5817 20 28 20Z" fill="url(#logo_grad_nav)"/>
+                            <circle cx="36" cy="20" r="5" fill="#e879f9"/>
+                            <circle cx="80" cy="68" r="5" fill="#38bdf8"/>
+                            <defs>
+                                <linearGradient id="logo_grad_nav" x1="20" y1="12" x2="88" y2="76" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#a78bfa"/>
+                                    <stop offset="0.5" stop-color="#c084fc"/>
+                                    <stop offset="1" stop-color="#38bdf8"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                </div>
+                <span class="text-2xl font-bold tracking-tight text-white">Loom</span>
+            </a>
+
+            <!-- Nav Links -->
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-300">
+                <a href="#features" class="hover:text-purple-400 transition-colors">Возможности</a>
+                <a href="#preview" class="hover:text-purple-400 transition-colors">Обзор</a>
+                <a href="#download" class="hover:text-purple-400 transition-colors">Скачать</a>
+            </div>
+
+            <!-- Action CTA -->
+            <div class="flex items-center gap-4">
+                <div class="glass-panel px-4 py-2 rounded-xl text-xs font-semibold text-purple-300 border border-purple-500/30 flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                    <span>В разработке</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-36 pb-20 overflow-hidden min-h-screen flex items-center justify-center">
+        <!-- Glowing Background Spheres -->
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-600/20 rounded-full blur-[140px] pointer-events-none animate-pulse-glow"></div>
+        <div class="absolute top-1/3 left-1/3 w-[350px] h-[350px] bg-purple-600/15 rounded-full blur-[100px] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-6 relative z-10 text-center">
+            <!-- Badge -->
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel border-purple-500/30 text-purple-300 text-xs font-semibold tracking-wide uppercase mb-8 shadow-inner">
+                <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+                <span>Loom Desktop — Скоро релиз</span>
+            </div>
+
+            <!-- Title -->
+            <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight text-white mb-6 leading-tight max-w-4xl mx-auto">
+                Loom — <span class="gradient-text">Переосмысление</span> общения для ПК
+            </h1>
+
+            <!-- Subtitle -->
+            <p class="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed font-normal">
+                Мгновенный, надёжный и элегантный мессенджер нового поколения. Мы прямо сейчас создаём идеальный клиент для вашей рабочей станции.
+            </p>
+
+            <!-- Status Banner / In Development Box -->
+            <div class="max-w-xl mx-auto mb-16 p-6 rounded-2xl glass-panel border border-brand-500/30 relative overflow-hidden group">
+                <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-brand-600/20 rounded-full blur-2xl"></div>
+                <div class="flex items-center justify-center gap-3 text-amber-400 font-semibold mb-2 text-lg">
+                    <i class="fa-solid fa-code text-xl"></i>
+                    <span>Приложение находится в разработке</span>
+                </div>
+                <p class="text-gray-300 text-sm leading-relaxed">
+                    Мы проектируем архитектуру и создаём десктопную версию с нуля. Совсем скоро откроется закрытое бета-тестирование!
+                </p>
+                <div class="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
+                    <button onclick="scrollToSection('preview')" class="w-full sm:w-auto glass-panel hover:bg-white/5 text-gray-200 font-semibold px-6 py-3 rounded-xl text-sm flex items-center justify-center gap-2 border border-white/10 transition-all">
+                        <i class="fa-solid fa-desktop text-gray-400"></i>
+                        <span>Оценить интерфейс</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- OS Compatibility Tags -->
+            <div class="flex items-center justify-center gap-6 text-gray-500 text-sm font-medium">
+                <span class="flex items-center gap-2"><i class="fa-brands fa-windows"></i> Windows 10/11</span>
+                <span class="flex items-center gap-2"><i class="fa-brands fa-apple"></i> macOS 12+</span>
+                <span class="flex items-center gap-2"><i class="fa-brands fa-linux"></i> Linux / AppImage</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive App Preview Section -->
+    <section id="preview" class="py-20 relative z-10">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Интерфейс, в который невозможно не влюбиться</h2>
+                <p class="text-gray-400 max-w-xl mx-auto">Каждая деталь продумана для работы на большом экране. Никакого мусора, только вы и ваши разговоры.</p>
+            </div>
+
+            <!-- Desktop App Window Frame -->
+            <div class="glass-panel rounded-2xl shadow-2xl overflow-hidden border border-white/10 transition-all duration-500 animate-float">
+                <!-- Window Header / Titlebar -->
+                <div class="bg-dark-card/90 px-4 py-3 border-b border-white/5 flex items-center justify-between select-none">
+                    <div class="flex items-center gap-2">
+                        <div class="w-3 h-3 rounded-full bg-red-500/80 cursor-pointer"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500/80 cursor-pointer"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-500/80 cursor-pointer"></div>
+                        <span class="ml-4 text-xs font-medium text-gray-400">Loom Desktop App</span>
+                    </div>
+                    <div class="flex items-center gap-3 text-gray-500 text-xs">
+                        <i class="fa-solid fa-[#ffffff] fa-shield-halved text-emerald-400"></i>
+                        <span>End-to-End Encrypted</span>
+                    </div>
+                </div>
+
+                <!-- Window Content Mockup -->
+                <div class="grid grid-cols-12 h-[520px] text-sm">
+                    <!-- Sidebar Chat List -->
+                    <div class="col-span-4 md:col-span-3 bg-dark-bg/60 border-r border-white/5 flex flex-col">
+                        <!-- Sidebar Header -->
+                        <div class="p-4 border-b border-white/5 flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-full bg-brand-600 flex items-center justify-center font-bold text-white text-xs">
+                                    АВ
+                                </div>
+                                <span class="font-semibold text-gray-200">Александр</span>
+                            </div>
+                            <i class="fa-solid fa-[#ffffff] fa-gear text-gray-400 hover:text-white cursor-pointer"></i>
+                        </div>
+                        
+                        <!-- Search Box -->
+                        <div class="p-3">
+                            <div class="bg-dark-card rounded-xl px-3 py-2 flex items-center gap-2 text-xs text-gray-400 border border-white/5">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <input type="text" placeholder="Поиск диалогов..." class="bg-transparent border-none outline-none text-white w-full text-xs">
+                            </div>
+                        </div>
+
+                        <!-- Chat List Items -->
+                        <div class="flex-1 overflow-y-auto space-y-1 p-2">
+                            <div class="p-3 rounded-xl bg-brand-600/20 border border-brand-500/30 flex items-center gap-3 cursor-pointer">
+                                <div class="relative">
+                                    <div class="w-10 h-10 rounded-full bg-purple-500 flex items-center justify-center font-bold text-white">
+                                        ДМ
+                                    </div>
+                                    <div class="w-3 h-3 bg-emerald-500 rounded-full border-2 border-dark-bg absolute bottom-0 right-0"></div>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center justify-between">
+                                        <span class="font-medium text-white truncate">Дмитрий</span>
+                                        <span class="text-[10px] text-gray-400">14:20</span>
+                                    </div>
+                                    <p class="text-xs text-purple-300 truncate">Отправил макеты билда для ПК...</p>
+                                </div>
+                            </div>
+
+                            <div class="p-3 rounded-xl hover:bg-white/5 flex items-center gap-3 cursor-pointer transition-colors">
+                                <div class="relative">
+                                    <div class="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center font-bold text-white">
+                                        E
+                                    </div>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center justify-between">
+                                        <span class="font-medium text-gray-300 truncate">Команда Loom Dev</span>
+                                        <span class="text-[10px] text-gray-500">12:05</span>
+                                    </div>
+                                    <p class="text-xs text-gray-400 truncate">Сервер синхронизирован 👍</p>
+                                </div>
+                            </div>
+
+                            <div class="p-3 rounded-xl hover:bg-white/5 flex items-center gap-3 cursor-pointer transition-colors">
+                                <div class="relative">
+                                    <div class="w-10 h-10 rounded-full bg-pink-600 flex items-center justify-center font-bold text-white">
+                                        A
+                                    </div>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center justify-between">
+                                        <span class="font-medium text-gray-300 truncate">Анна</span>
+                                        <span class="text-[10px] text-gray-500">Вчера</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500 truncate">Созвонимся завтра?</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Main Chat Area -->
+                    <div class="col-span-8 md:col-span-9 bg-dark-card/40 flex flex-col justify-between">
+                        <!-- Chat Header -->
+                        <div class="p-4 border-b border-white/5 flex items-center justify-between bg-dark-bg/30">
+                            <div class="flex items-center gap-3">
+                                <div class="w-9 h-9 rounded-full bg-purple-500 flex items-center justify-center font-bold text-white">
+                                    ДМ
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-white">Дмитрий</h4>
+                                    <span class="text-xs text-emerald-400 flex items-center gap-1">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> В сети
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4 text-gray-400">
+                                <i class="fa-solid fa-phone hover:text-white cursor-pointer"></i>
+                                <i class="fa-solid fa-video hover:text-white cursor-pointer"></i>
+                                <i class="fa-solid fa-ellipsis-vertical hover:text-white cursor-pointer"></i>
+                            </div>
+                        </div>
+
+                        <!-- Chat Messages List -->
+                        <div class="p-6 space-y-4 overflow-y-auto flex-1">
+                            <div class="flex justify-start">
+                                <div class="max-w-md bg-dark-card p-3 rounded-2xl rounded-tl-none border border-white/5 text-gray-200">
+                                    Привет! Как успехи с перезапуском мессенджера?
+                                    <span class="block text-[10px] text-gray-500 text-right mt-1">14:18</span>
+                                </div>
+                            </div>
+
+                            <div class="flex justify-end">
+                                <div class="max-w-md bg-brand-600 p-3 rounded-2xl rounded-tr-none text-white shadow-lg">
+                                    Отлично! Мы полностью сменили концепцию, делаем Loom — супербыстрое приложение с фокусировкой на ПК.
+                                    <span class="block text-[10px] text-purple-200 text-right mt-1">14:19</span>
+                                </div>
+                            </div>
+
+                            <div class="flex justify-start">
+                                <div class="max-w-md bg-dark-card p-3 rounded-2xl rounded-tl-none border border-white/5 text-gray-200">
+                                    Звучит круто 🔥 Дизайн выглядит очень стильно и минималистично.
+                                    <span class="block text-[10px] text-gray-500 text-right mt-1">14:20</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Input Bar -->
+                        <div class="p-4 border-t border-white/5 bg-dark-bg/40">
+                            <div class="bg-dark-card rounded-xl px-4 py-3 flex items-center gap-3 border border-white/10">
+                                <i class="fa-solid fa-paperclip text-gray-400 hover:text-white cursor-pointer"></i>
+                                <input type="text" placeholder="Написать сообщение в Loom..." class="bg-transparent border-none outline-none text-white w-full text-sm">
+                                <button class="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center text-white hover:bg-brand-500 transition-colors">
+                                    <i class="fa-solid fa-paper-plane text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Features Section -->
+    <section id="features" class="py-24 relative z-10 bg-dark-card/30 border-y border-white/5">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-extrabold mb-4">Почему именно <span class="gradient-text">Loom</span>?</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">Мы пересмотрели подход к созданию десктопных приложений, отсекли всё лишнее и оставили самое главное.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Feature 1 -->
+                <div class="glass-panel p-8 rounded-2xl hover:border-brand-500/40 transition-all duration-300 hover:-translate-y-1">
+                    <div class="w-14 h-14 rounded-2xl bg-brand-600/20 border border-brand-500/30 flex items-center justify-center text-brand-500 text-2xl mb-6">
+                        <i class="fa-solid fa-[#ffffff] fa-bolt"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-white">Молниеносная скорость</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Минимальное потребление ОЗУ и моментальная загрузка сообщений благодаря оптимизированной архитектуре.</p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="glass-panel p-8 rounded-2xl hover:border-brand-500/40 transition-all duration-300 hover:-translate-y-1">
+                    <div class="w-14 h-14 rounded-2xl bg-purple-600/20 border border-purple-500/30 flex items-center justify-center text-purple-400 text-2xl mb-6">
+                        <i class="fa-solid fa-[#ffffff] fa-shield-halved"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-white">Безопасность</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Сквозное шифрование всех диалогов и файлов. Ваши данные принадлежат только вам.</p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="glass-panel p-8 rounded-2xl hover:border-brand-500/40 transition-all duration-300 hover:-translate-y-1">
+                    <div class="w-14 h-14 rounded-2xl bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center text-indigo-400 text-2xl mb-6">
+                        <i class="fa-solid fa-[#ffffff] fa-rotate"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-white">Real-time Синхронизация</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Все изменения мгновенно отображаются на всех ваших устройствах без задержек.</p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="glass-panel p-8 rounded-2xl hover:border-brand-500/40 transition-all duration-300 hover:-translate-y-1">
+                    <div class="w-14 h-14 rounded-2xl bg-pink-600/20 border border-pink-500/30 flex items-center justify-center text-pink-400 text-2xl mb-6">
+                        <i class="fa-solid fa-[#ffffff] fa-wand-magic-sparkles"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-white">Премиальный UI</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Тёмная тема с элементами Glassmorphism, настраиваемыми горячими клавишами и кастомизацией.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- In Development Status Banner (Replaces Download Section) -->
+    <section id="download" class="py-24 relative z-10">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="glass-panel p-10 md:p-14 rounded-3xl text-center border border-brand-500/30 relative overflow-hidden">
+                <div class="absolute -top-24 -left-24 w-60 h-60 bg-brand-600/20 rounded-full blur-3xl"></div>
+                <div class="absolute -bottom-24 -right-24 w-60 h-60 bg-purple-600/20 rounded-full blur-3xl"></div>
+                
+                <div class="w-20 h-20 rounded-3xl bg-dark-card border border-brand-500/40 flex items-center justify-center p-3 mx-auto mb-6 shadow-2xl shadow-purple-500/20">
+                    <svg viewBox="0 0 100 100" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M28 20C28 15.5817 31.5817 12 36 12C40.4183 12 44 15.5817 44 20V52C44 56.4183 47.5817 60 52 60H80C84.4183 60 88 63.5817 88 68C88 72.4183 84.4183 76 80 76H36C27.1634 76 20 68.8366 20 60V28C20 23.5817 23.5817 20 28 20Z" fill="url(#logo_grad_hero)"/>
+                        <circle cx="36" cy="20" r="6" fill="#e879f9"/>
+                        <circle cx="80" cy="68" r="6" fill="#38bdf8"/>
+                        <defs>
+                            <linearGradient id="logo_grad_hero" x1="20" y1="12" x2="88" y2="76" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#a78bfa"/>
+                                <stop offset="0.5" stop-color="#c084fc"/>
+                                <stop offset="1" stop-color="#38bdf8"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+
+                <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-4">
+                    Мы строим <span class="gradient-text">Loom</span> прямо сейчас
+                </h2>
+
+                <p class="text-gray-300 max-w-2xl mx-auto text-base md:text-lg mb-8 leading-relaxed">
+                    Секция загрузки пока недоступна. Мы активно пишем код десктопного клиеннта, настраиваем сквозное шифрование и оптимизируем работу баз данных. 
+                </p>
+
+                <div class="inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-dark-bg/80 border border-white/10 text-gray-300 text-sm font-medium">
+                    <span class="w-3 h-3 rounded-full bg-amber-400 animate-ping"></span>
+                    <span>Статус проекта: Альфа-разработка (0.1.0)</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t border-white/5 bg-dark-bg text-gray-500 text-sm">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-dark-card border border-white/10 p-1 flex items-center justify-center">
+                    <svg viewBox="0 0 100 100" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M28 20C28 15.5817 31.5817 12 36 12C40.4183 12 44 15.5817 44 20V52C44 56.4183 47.5817 60 52 60H80C84.4183 60 88 63.5817 88 68C88 72.4183 84.4183 76 80 76H36C27.1634 76 20 68.8366 20 60V28C20 23.5817 23.5817 20 28 20Z" fill="url(#logo_grad_footer)"/>
+                        <defs>
+                            <linearGradient id="logo_grad_footer" x1="20" y1="12" x2="88" y2="76" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#a78bfa"/>
+                                <stop offset="1" stop-color="#38bdf8"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <span class="text-gray-300 font-semibold">Loom Desktop</span>
+            </div>
+            <p>© 2026 Loom Messenger. В процессе разработки.</p>
+            <div class="flex items-center gap-6">
+                <a href="#" class="hover:text-white transition-colors"><i class="fa-brands fa-github text-lg"></i></a>
+                <a href="#" class="hover:text-white transition-colors"><i class="fa-brands fa-telegram text-lg"></i></a>
+                <a href="#" class="hover:text-white transition-colors"><i class="fa-brands fa-twitter text-lg"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script Section -->
+    <script>
+        function scrollToSection(id) {
+            document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
